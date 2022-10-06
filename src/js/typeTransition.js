@@ -1,20 +1,17 @@
 import { gsap } from "gsap";
 
-// .type__line CSS opacity value (CSS variable)
 const TYPE_LINE_OPACITY = getComputedStyle(document.body).getPropertyValue(
   "--type-line-opacity"
 );
 
 export class TypeTransition {
-  // DOM elements
   DOM = {};
 
   constructor(DOM_el) {
     this.DOM.el = DOM_el;
-    // lines of text
     this.DOM.lines = [...document.querySelectorAll(".type__line")];
   }
-  // "in" transition (total time: 2.5s)
+
   in() {
     return gsap
       .timeline({ paused: true })

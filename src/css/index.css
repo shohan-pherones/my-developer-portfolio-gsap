@@ -1,95 +1,102 @@
-*, :after, :before {
+@import url("https://fonts.googleapis.com/css2?family=Marcellus&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+*,
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
 :root {
-  font-size: 14px;
+  --color-text: #21242b;
+  --color-text-alt: #21242b;
+  --color-bg: #70b1ab;
+  --color-link: #21242b;
+  --color-link-hover: #21242b;
+  --color-link-alt: #21242b;
+  --color-type: #21242b;
+  --type-line-opacity: 0.05;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
 }
 
 body {
-  --color-text: #000;
-  --color-text-alt: #000;
-  --color-bg: #de5f40;
-  --color-link: #000;
-  --color-link-hover: #000;
-  --color-link-alt: #000;
-  --color-type: #000;
-  --type-line-opacity: .05;
+  margin: 0;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  font-family: halyard-display, sans-serif;
 }
 
-.js .loading:before, .js .loading:after {
+.js .loading::before,
+.js .loading::after {
   content: "";
-  z-index: 1000;
   position: fixed;
+  z-index: 1000;
 }
 
-.js .loading:before {
+.js .loading::before {
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: var(--color-bg);
-  top: 0;
-  left: 0;
 }
 
-.js .loading:after {
-  width: 60px;
-  height: 60px;
-  opacity: .4;
-  background: var(--color-link);
-  border-radius: 50%;
-  margin: -30px 0 0 -30px;
-  animation: .7s linear infinite alternate forwards loaderAnim;
+.js .loading::after {
   top: 50%;
   left: 50%;
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+  border-radius: 50%;
+  opacity: 0.4;
+  background: var(--color-link);
+  animation: loaderAnim 0.7s linear infinite alternate forwards;
 }
 
 @keyframes loaderAnim {
   to {
     opacity: 1;
-    transform: scale3d(.5, .5, 1);
+    transform: scale3d(0.5, 0.5, 1);
   }
 }
 
 a {
+  text-decoration: underline;
   color: var(--color-link);
   outline: none;
-  text-decoration: underline;
 }
 
 a:hover {
+  text-decoration: none;
   color: var(--color-link-hover);
   outline: none;
-  text-decoration: none;
 }
 
 a.link-alt {
-  color: var(--color-link-alt);
   text-decoration: none;
+  color: var(--color-link-alt);
 }
 
 a:focus {
-  background: #d3d3d3;
   outline: none;
+  background: lightgrey;
 }
 
 a:focus:not(:focus-visible) {
-  background: none;
+  background: transparent;
 }
 
 a:focus-visible {
-  background: none;
   outline: 2px solid red;
+  background: transparent;
 }
 
 main {
@@ -98,11 +105,11 @@ main {
 }
 
 .unbutton {
-  font: inherit;
   background: none;
   border: 0;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  font: inherit;
 }
 
 .unbutton:focus {
@@ -110,18 +117,17 @@ main {
 }
 
 .frame {
-  z-index: 1000;
-  text-transform: uppercase;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
   padding: 1rem;
+  margin-bottom: 2rem;
   display: flex;
+  flex-wrap: wrap;
   position: relative;
+  z-index: 1000;
 }
 
 .frame__title {
-  margin: 0 0 1rem;
   font-size: 1rem;
+  margin: 0 0 1rem;
 }
 
 .frame__tagline {
@@ -137,33 +143,32 @@ main {
 }
 
 .frame__author {
+  display: block;
   width: 100%;
   margin-bottom: 1rem;
-  display: block;
 }
 
 .item-wrap {
-  text-transform: uppercase;
-  grid-template-columns: 50% 50%;
   display: grid;
+  grid-template-columns: 50% 50%;
 }
 
 .item {
   --base: 7vh;
   --interval: 9vh;
+  padding: 1rem;
+  margin: 1rem 0;
   cursor: pointer;
   width: 100%;
-  will-change: transform, opacity;
-  flex: none;
-  margin: 1rem 0;
-  padding: 1rem;
   position: relative;
+  flex: none;
+  will-change: transform, opacity;
 }
 
 .item__img {
   width: 100%;
-  will-change: transform;
   border-radius: 12px;
+  will-change: transform;
 }
 
 .item__caption-title {
@@ -175,53 +180,59 @@ main {
 }
 
 .type {
+  position: fixed;
   height: 100vmax;
   text-transform: uppercase;
   width: 100vmax;
-  text-align: center;
-  will-change: transform;
-  place-content: center;
-  margin-top: -50vmax;
   display: grid;
-  position: fixed;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
   top: 50%;
+  margin-top: -50vmax;
+  will-change: transform;
 }
 
 .type__line {
   white-space: nowrap;
+  font-size: 20vh;
+  font-size: clamp(7rem, 18.75vh, 15rem);
+  line-height: 0.75;
+  font-weight: bold;
+  font-family: "Marcellus", serif;
   color: var(--color-type);
   opacity: var(--type-line-opacity);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   will-change: transform, opacity;
-  font-family: quiche-sans, sans-serif;
-  font-size: clamp(7rem, 18.75vh, 15rem);
-  font-weight: bold;
-  line-height: .75;
 }
 
 .article-wrap {
-  width: 100%;
-  pointer-events: none;
-  place-self: end center;
-  padding: 1rem;
   position: absolute;
   top: 5vh;
+  width: 100%;
+  justify-self: center;
+  align-self: end;
+  padding: 1rem;
+  pointer-events: none;
 }
 
 .article {
+  position: absolute;
   opacity: 0;
   pointer-events: none;
-  width: 100%;
-  grid-template-columns: 1rem 1fr;
-  grid-template-areas: "img img"
-                       "number title"
-                       "intro intro"
-                       "desc desc";
-  align-items: start;
   display: grid;
-  position: absolute;
+  grid-template-columns: 1rem 1fr;
+  width: 100%;
+  align-items: start;
+  grid-template-areas:
+    "img img"
+    "number title"
+    "intro intro"
+    "desc desc";
 }
 
 .article--current {
@@ -233,18 +244,18 @@ main {
 .article__img-wrap {
   width: 100%;
   height: 250px;
-  transform-origin: 50% 100%;
-  border-radius: 17px 17px 0 0;
-  grid-area: img;
-  margin-bottom: 1rem;
   overflow: hidden;
+  grid-area: img;
+  transform-origin: 50% 100%;
+  margin-bottom: 1rem;
+  border-radius: 17px 17px 0 0;
 }
 
 .article__img {
   width: 100%;
   height: 100%;
-  background-position: 50% 35%;
   background-size: cover;
+  background-position: 50% 35%;
 }
 
 .article__number {
@@ -253,52 +264,52 @@ main {
 }
 
 .article__title {
-  text-transform: uppercase;
-  color: var(--color-type);
-  pointer: default;
   grid-area: title;
-  margin: 1rem 0 .5rem;
-  font-family: quiche-sans, sans-serif;
+  line-height: 0.85;
   font-size: 8vw;
+  text-transform: uppercase;
   font-weight: bold;
-  line-height: .85;
+  font-family: "Marcellus", serif;
+  color: var(--color-type);
   position: relative;
+  margin: 1rem 0 0.5rem;
 }
 
 .article__intro {
   grid-area: intro;
-  padding-right: 2rem;
   font-weight: bold;
+  padding-right: 2rem;
 }
 
 .article__description {
   grid-area: desc;
-  padding-right: 2rem;
   overflow: hidden;
+  padding-right: 2rem;
 }
 
 .back {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  top: 0;
+  left: 0;
   opacity: 0;
   pointer-events: none;
   stroke: #000;
   z-index: 1000;
   cursor: pointer;
   width: 50px;
-  background: none;
-  border: 0;
-  margin: 0 0 1rem;
-  padding: 0;
-  top: 0;
-  left: 0;
 }
 
 .back svg {
   stroke-linecap: round;
 }
 
-.back:hover, .back:focus {
-  stroke: #823725;
+.back:hover,
+.back:focus {
   outline: none;
+  stroke: #823725;
 }
 
 @media screen and (min-width: 53em) {
@@ -306,29 +317,30 @@ main {
     font-size: 16px;
   }
 
-  html, body {
+  html,
+  body {
     overflow: hidden;
   }
 
   .frame {
+    position: fixed;
     text-align: left;
     z-index: 100;
-    width: 100%;
-    max-width: none;
-    grid-template-columns: 40% 20% 40%;
-    grid-template-areas: "title author links";
-    align-content: space-between;
-    margin: 0;
-    padding: 1rem 2vw;
-    display: grid;
-    position: fixed;
     top: 0;
     left: 0;
+    display: grid;
+    align-content: space-between;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 1rem 2vw;
+    grid-template-columns: 40% 20% 40%;
+    grid-template-areas: "title author links";
   }
 
   .frame__title-wrap {
-    text-align: left;
     grid-area: title;
+    text-align: left;
   }
 
   .frame__title {
@@ -346,36 +358,36 @@ main {
 
   .frame__links {
     grid-area: links;
-    justify-self: end;
     padding: 0;
+    justify-self: end;
   }
 
   .item-wrap {
     height: 100vh;
+    display: flex;
+    overflow: hidden;
     width: 100vw;
+    position: relative;
     justify-content: flex-start;
     align-items: center;
-    display: flex;
-    position: relative;
-    overflow: hidden;
   }
 
   .item {
     width: 22vw;
-    margin: auto 2vw var(--base);
     padding: 0;
+    margin: auto 2vw var(--base);
   }
 
   .item:nth-child(2) {
-    margin-bottom: calc(var(--base)  + var(--interval));
+    margin-bottom: calc(var(--base) + var(--interval));
   }
 
   .item:nth-child(3) {
-    margin-bottom: calc(var(--base)  + var(--interval) * 2);
+    margin-bottom: calc(var(--base) + var(--interval) * 2);
   }
 
   .item:nth-child(4) {
-    margin-bottom: calc(var(--base)  + var(--interval) * 3);
+    margin-bottom: calc(var(--base) + var(--interval) * 3);
   }
 
   .item__caption-description {
@@ -384,25 +396,27 @@ main {
 
   .back {
     position: absolute;
-    left: calc(31vw - 140px + 1.5rem);
+    left: calc(((100vw - (38vw + 280px)) / 2) + 1.5rem);
   }
 
   .article-wrap {
+    top: 20vh;
     height: 80vh;
     padding: 0;
-    top: 20vh;
   }
 
   .article {
     height: 100%;
     width: calc(38vw + 280px);
-    grid-template: ". . img ." 10vw
-                   "number . img ." 2rem
-                   ". title img ." 12vw
-                   ". intro img ."
-                   ". desc img ."
-                   / 1.5rem 30% 1fr 1.5rem;
     margin: 0 auto;
+    grid-template-rows: 10vw 2rem 12vw auto auto;
+    grid-template-columns: 1.5rem 30% 1fr 1.5rem;
+    grid-template-areas:
+      "... ... img ..."
+      "number ... img ..."
+      "... title img ..."
+      "... intro img ..."
+      "... desc img ...";
   }
 
   .article__title {
@@ -415,15 +429,13 @@ main {
   }
 
   .article__img-wrap {
+    align-self: end;
     width: 100%;
     height: 100%;
-    align-self: end;
     margin: 0;
   }
 
   .article__img {
-    background-position: 50%;
+    background-position: 50% 50%;
   }
 }
-
-/*# sourceMappingURL=index.d046a61c.css.map */

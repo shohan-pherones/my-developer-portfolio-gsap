@@ -539,59 +539,40 @@ var _typeTransition = require("./typeTransition");
 var _item = require("./item");
 var _gsapCore = require("gsap/gsap-core");
 var _gsapCoreDefault = parcelHelpers.interopDefault(_gsapCore);
-// preload images then remove loader (loading class)
 (0, _utils.preloadImages)(".item__img, .article__img").then(()=>document.body.classList.remove("loading"));
-// text transition
 const typeT = new (0, _typeTransition.TypeTransition)(document.querySelector("[data-type-transition]"));
-// true if there's an animation running
 let isAnimating = false;
-// frame element
 const frameEl = document.querySelector(".frame");
-/**** Items ****/ // items array
 let itemsInstanceArr = [];
-// current item's index
 let currentItem = -1;
-// Items wrap
 const itemsWrap = document.querySelector(".item-wrap");
 [
     ...itemsWrap.querySelectorAll(".item")
 ].forEach((itemEl)=>{
-    // create a new Item
     const item = new (0, _item.Item)(itemEl);
-    // add it to the array of Item's indexes
     itemsInstanceArr.push(item);
-    // on click action
     item.DOM.el.addEventListener("click", ()=>openItem(item));
 });
 const openItem = (item)=>{
     if (isAnimating) return;
     isAnimating = true;
-    // update currentItem index
     currentItem = itemsInstanceArr.indexOf(item);
-    // gsap timeline
     const openTimeline = (0, _gsapCoreDefault.default).timeline({
         onComplete: ()=>isAnimating = false
     });
-    // labels
-    openTimeline.addLabel("start", 0)// type transition starts a bit after the items animation
-    .addLabel("typeTransition", 0.3)// the article will show a bit before the text transition ends
-    .addLabel("articleOpening", typeT.in().totalDuration() * 0.75 + openTimeline.labels.typeTransition)// fade out the items
-    .to(itemsInstanceArr.map((item)=>item.DOM.el), {
+    openTimeline.addLabel("start", 0).addLabel("typeTransition", 0.3).addLabel("articleOpening", typeT.in().totalDuration() * 0.75 + openTimeline.labels.typeTransition).to(itemsInstanceArr.map((item)=>item.DOM.el), {
         duration: 0.8,
         ease: "power2.inOut",
         opacity: 0,
         y: (pos)=>pos % 2 ? "25%" : "-25%"
-    }, "start")// fade out the page frame
-    .to(frameEl, {
+    }, "start").to(frameEl, {
         duration: 0.8,
         ease: "power3",
         opacity: 0,
         onComplete: ()=>(0, _gsapCoreDefault.default).set(frameEl, {
                 pointerEvents: "none"
             })
-    }, "start")// text transition starts here
-    .add(typeT.in().play(), "typeTransition")// add current class to the item's article and set the pointer events
-    .add(()=>{
+    }, "start").add(typeT.in().play(), "typeTransition").add(()=>{
         (0, _gsapCoreDefault.default).set(backCtrl, {
             pointerEvents: "auto"
         });
@@ -599,12 +580,10 @@ const openItem = (item)=>{
             pointerEvents: "none"
         });
         itemsInstanceArr[currentItem].DOM.article.classList.add("article--current");
-    }, "articleOpening")// show the back button
-    .to(backCtrl, {
+    }, "articleOpening").to(backCtrl, {
         duration: 0.7,
         opacity: 1
-    }, "articleOpening")// initially hide all the article elements so we can animate them in
-    .set([
+    }, "articleOpening").set([
         item.article.DOM.title,
         item.article.DOM.number,
         item.article.DOM.intro,
@@ -612,13 +591,11 @@ const openItem = (item)=>{
     ], {
         opacity: 0,
         y: "50%"
-    }, "articleOpening")// the image wrap and image elements will have opposite translate values (reveal/unreveal effect)
-    .set(item.article.DOM.imageWrap, {
+    }, "articleOpening").set(item.article.DOM.imageWrap, {
         y: "100%"
     }, 2).set(item.article.DOM.image, {
         y: "-100%"
-    }, 2)// now fade in and translate the article's elements
-    .to([
+    }, 2).to([
         item.article.DOM.title,
         item.article.DOM.number,
         item.article.DOM.intro,
@@ -629,8 +606,7 @@ const openItem = (item)=>{
         opacity: 1,
         y: "0%",
         stagger: 0.04
-    }, "articleOpening")// and reveal the image
-    .to([
+    }, "articleOpening").to([
         item.article.DOM.imageWrap,
         item.article.DOM.image
     ], {
@@ -639,18 +615,14 @@ const openItem = (item)=>{
         y: "0%"
     }, "articleOpening");
 };
-/**** Back action ****/ // back button
 const backCtrl = document.querySelector(".back");
 const closeItem = ()=>{
     if (isAnimating) return;
     isAnimating = true;
-    // current open item
     const item = itemsInstanceArr[currentItem];
-    // gsap timeline
     const closeTimeline = (0, _gsapCoreDefault.default).timeline({
         onComplete: ()=>isAnimating = false
     });
-    // labels
     closeTimeline.addLabel("start", 0).addLabel("typeTransition", 0.5).addLabel("showItems", typeT.out().totalDuration() * 0.7 + closeTimeline.labels.typeTransition).to(backCtrl, {
         duration: 0.7,
         ease: "power1",
@@ -674,8 +646,7 @@ const closeItem = ()=>{
         duration: 1,
         ease: "power4.in",
         y: "-100%"
-    }, "start")// remove current class from the item's article and set the pointer events
-    .add(()=>{
+    }, "start").add(()=>{
         (0, _gsapCoreDefault.default).set(backCtrl, {
             pointerEvents: "none"
         });
@@ -683,8 +654,7 @@ const closeItem = ()=>{
             pointerEvents: "auto"
         });
         item.DOM.article.classList.remove("article--current");
-    })// text transition starts here
-    .add(typeT.out().play(), "typeTransition").to(frameEl, {
+    }).add(typeT.out().play(), "typeTransition").to(frameEl, {
         duration: 0.8,
         ease: "power3",
         opacity: 1,
@@ -705,7 +675,6 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "preloadImages", ()=>preloadImages);
 const imagesLoaded = require("imagesloaded");
-// Preload images
 const preloadImages = (selector = "img")=>{
     return new Promise((resolve)=>{
         imagesLoaded(document.querySelectorAll(selector), {
@@ -5061,19 +5030,15 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "TypeTransition", ()=>TypeTransition);
 var _gsap = require("gsap");
-// .type__line CSS opacity value (CSS variable)
 const TYPE_LINE_OPACITY = getComputedStyle(document.body).getPropertyValue("--type-line-opacity");
 class TypeTransition {
-    // DOM elements
     DOM = {};
     constructor(DOM_el){
         this.DOM.el = DOM_el;
-        // lines of text
         this.DOM.lines = [
             ...document.querySelectorAll(".type__line")
         ];
     }
-    // "in" transition (total time: 2.5s)
     in() {
         return (0, _gsap.gsap).timeline({
             paused: true
@@ -5149,7 +5114,6 @@ var _gsapCore = require("gsap/gsap-core");
 var _gsapCoreDefault = parcelHelpers.interopDefault(_gsapCore);
 var _article = require("./article");
 class Item {
-    // DOM elements
     DOM = {
         el: null,
         image: null,
@@ -5157,19 +5121,14 @@ class Item {
         description: null,
         article: null
     };
-    // the Item's Article instance
     article;
     constructor(DOM_el){
         this.DOM.el = DOM_el;
-        // image, title and description
         this.DOM.image = this.DOM.el.querySelector(".item__img");
         this.DOM.title = this.DOM.el.querySelector(".item__caption-title");
         this.DOM.description = this.DOM.el.querySelector(".item__caption-description");
-        // article element for this item
         this.DOM.article = document.getElementById(this.DOM.el.dataset.article);
-        // Article instance
         this.article = new (0, _article.Article)(this.DOM.article);
-        // mouseenter/mouseleave events: translate all elements
         const hoverTimelineDefaults = {
             duration: 1,
             ease: "expo"
@@ -5204,7 +5163,6 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "Article", ()=>Article);
 class Article {
-    // DOM elements
     DOM = {
         el: null,
         imageWrap: null,
@@ -5216,10 +5174,8 @@ class Article {
     };
     constructor(DOM_el){
         this.DOM.el = DOM_el;
-        // image
         this.DOM.imageWrap = this.DOM.el.querySelector(".article__img-wrap");
         this.DOM.image = this.DOM.el.querySelector(".article__img");
-        // number, title, intro, description
         this.DOM.number = this.DOM.el.querySelector(".article__number");
         this.DOM.title = this.DOM.el.querySelector(".article__title");
         this.DOM.intro = this.DOM.el.querySelector(".article__intro");

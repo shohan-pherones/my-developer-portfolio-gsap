@@ -4,65 +4,43 @@ import { TypeTransition } from "./typeTransition";
 import { Item } from "./item";
 import gsap from "gsap/gsap-core";
 
-// preload images then remove loader (loading class)
 preloadImages(".item__img, .article__img").then(() =>
   document.body.classList.remove("loading")
 );
 
-// text transition
 const typeT = new TypeTransition(
   document.querySelector("[data-type-transition]")
 );
 
-// true if there's an animation running
 let isAnimating = false;
 
-// frame element
 const frameEl = document.querySelector(".frame");
 
-/**** Items ****/
-
-// items array
 let itemsInstanceArr = [];
-// current item's index
 let currentItem = -1;
-// Items wrap
 const itemsWrap = document.querySelector(".item-wrap");
 
 [...itemsWrap.querySelectorAll(".item")].forEach((itemEl) => {
-  // create a new Item
   const item = new Item(itemEl);
-  // add it to the array of Item's indexes
   itemsInstanceArr.push(item);
-
-  // on click action
   item.DOM.el.addEventListener("click", () => openItem(item));
 });
 
 const openItem = (item) => {
   if (isAnimating) return;
   isAnimating = true;
-
-  // update currentItem index
   currentItem = itemsInstanceArr.indexOf(item);
-
-  // gsap timeline
   const openTimeline = gsap.timeline({
     onComplete: () => (isAnimating = false),
   });
 
-  // labels
   openTimeline
     .addLabel("start", 0)
-    // type transition starts a bit after the items animation
     .addLabel("typeTransition", 0.3)
-    // the article will show a bit before the text transition ends
     .addLabel(
       "articleOpening",
       typeT.in().totalDuration() * 0.75 + openTimeline.labels.typeTransition
     )
-
-    // fade out the items
     .to(
       itemsInstanceArr.map((item) => item.DOM.el),
       {
@@ -73,7 +51,6 @@ const openItem = (item) => {
       },
       "start"
     )
-    // fade out the page frame
     .to(
       frameEl,
       {
@@ -84,11 +61,7 @@ const openItem = (item) => {
       },
       "start"
     )
-
-    // text transition starts here
     .add(typeT.in().play(), "typeTransition")
-
-    // add current class to the item's article and set the pointer events
     .add(() => {
       gsap.set(backCtrl, { pointerEvents: "auto" });
       gsap.set(itemsWrap, { pointerEvents: "none" });
@@ -96,7 +69,6 @@ const openItem = (item) => {
         "article--current"
       );
     }, "articleOpening")
-    // show the back button
     .to(
       backCtrl,
       {
@@ -105,7 +77,6 @@ const openItem = (item) => {
       },
       "articleOpening"
     )
-    // initially hide all the article elements so we can animate them in
     .set(
       [
         item.article.DOM.title,
@@ -119,10 +90,8 @@ const openItem = (item) => {
       },
       "articleOpening"
     )
-    // the image wrap and image elements will have opposite translate values (reveal/unreveal effect)
     .set(item.article.DOM.imageWrap, { y: "100%" }, 2)
     .set(item.article.DOM.image, { y: "-100%" }, 2)
-    // now fade in and translate the article's elements
     .to(
       [
         item.article.DOM.title,
@@ -139,7 +108,6 @@ const openItem = (item) => {
       },
       "articleOpening"
     )
-    // and reveal the image
     .to(
       [item.article.DOM.imageWrap, item.article.DOM.image],
       {
@@ -151,24 +119,18 @@ const openItem = (item) => {
     );
 };
 
-/**** Back action ****/
-
-// back button
 const backCtrl = document.querySelector(".back");
 
 const closeItem = () => {
   if (isAnimating) return;
   isAnimating = true;
 
-  // current open item
   const item = itemsInstanceArr[currentItem];
 
-  // gsap timeline
   const closeTimeline = gsap.timeline({
     onComplete: () => (isAnimating = false),
   });
 
-  // labels
   closeTimeline
     .addLabel("start", 0)
     .addLabel("typeTransition", 0.5)
@@ -176,7 +138,6 @@ const closeItem = () => {
       "showItems",
       typeT.out().totalDuration() * 0.7 + closeTimeline.labels.typeTransition
     )
-
     .to(
       backCtrl,
       {
@@ -220,17 +181,12 @@ const closeItem = () => {
       },
       "start"
     )
-
-    // remove current class from the item's article and set the pointer events
     .add(() => {
       gsap.set(backCtrl, { pointerEvents: "none" });
       gsap.set(itemsWrap, { pointerEvents: "auto" });
       item.DOM.article.classList.remove("article--current");
     })
-
-    // text transition starts here
     .add(typeT.out().play(), "typeTransition")
-
     .to(
       frameEl,
       {
