@@ -1,0 +1,21 @@
+{
+  "name": "my-developer-portfolio",
+  "version": "1.0.0",
+  "description": "My developer portfolio website",
+  "scripts": {
+    "start": "parcel src/index.html --open",
+    "clean": "del dist",
+    "build:parcel": "parcel build src/index.html --no-content-hash --no-source-maps --public-url ./",
+    "build": "npm run clean && npm run build:parcel"
+  },
+  "author": "Md. Shohanur Rahman",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-image": "^2.7.0",
+    "parcel": "^2.7.0"
+  },
+  "dependencies": {
+    "gsap": "^3.11.3",
+    "imagesloaded": "^5.0.0"
+  }
+}
